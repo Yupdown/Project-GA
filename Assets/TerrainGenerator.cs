@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TerrainGenerator : MonoBehaviour {
-
+public class TerrainGenerator : MonoBehaviour
+{
     [SerializeField]
     private GameObject _terrainObject;
 
@@ -17,7 +17,8 @@ public class TerrainGenerator : MonoBehaviour {
         _transform = GetComponent<Transform>();
     }
 
-    void Start () {
+    void Start ()
+    {
 		for (int x = 0; x < Width; x++)
         {
             for (int z = 0; z < Height; z++)
