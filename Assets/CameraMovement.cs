@@ -6,6 +6,10 @@ public class CameraMovement : MonoBehaviour
 {
     private Transform _transform;
 
+    private float _cameraAngle = 45f;
+
+    private Vector2 _cameraPosition;
+
     private void Awake()
     {
         _transform = GetComponent<Transform>();
@@ -16,8 +20,21 @@ public class CameraMovement : MonoBehaviour
         float horizontal = Input.GetAxis("Horizontal");
         float vertical = Input.GetAxis("Vertical");
 
-        Vector3 deltaVector = new Vector3(horizontal + vertical, 0f, vertical - horizontal) * 10f * Time.deltaTime;
+        _cameraPosition += new Vector2(horizontal + vertical, vertical - horizontal) * 10f * Time.deltaTime;
 
-        _transform.localPosition += deltaVector;
+        if (Input.GetKeyDown(KeyCode.Q))
+            ChangeAngle(90f);
+        else if (Input.GetKeyDown(KeyCode.E))
+            ChangeAngle(-90f);
+
+        Transform parent = _transform.parent;
+
+        parent.localPosition = new Vector3(_cameraPosition.x, 0f, _cameraPosition.y);
+        parent.localRotation = Quaternion.Euler(0f, Mathf.LerpAngle(parent.localRotation.eulerAngles.y, _cameraAngle, Time.deltaTime * 8f), 0f);
 	}
+
+    public void ChangeAngle(float delta)
+    {
+        _cameraAngle += delta;
+    }
 }

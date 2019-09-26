@@ -9,8 +9,8 @@ public class TerrainGenerator : MonoBehaviour
 
     private Transform _transform;
 
-    private const int Width = 30;
-    private const int Height = 30;
+    private const int Width = 64;
+    private const int Height = 64;
 
     private void Awake()
     {
@@ -23,7 +23,7 @@ public class TerrainGenerator : MonoBehaviour
         {
             for (int z = 0; z < Height; z++)
             {
-                float height = Mathf.PerlinNoise(x * 0.1f, z * 0.1f) * 10f;
+                float height = Mathf.Max(Mathf.Floor(Mathf.PerlinNoise(x * 0.05f, z * 0.05f) * 16f - 8f), 1f);
 
                 Vector3 tilePosition = new Vector3(x - (Width * 0.5f - 0.5f), height * 0.5f, z - (Height * 0.5f - 0.5f));
 
