@@ -8,10 +8,10 @@ public class RangeWeaponPrototype : MonoBehaviour
     private Camera _aimingCamera;
 
     [SerializeField]
-    private CursorVisualizer _cursor;
+    private LineRenderer _lineRenderer;
 
     [SerializeField]
-    private LineRenderer _lineRenderer;
+    private GameObject _bulletObject;
 
     private Ray _screenRay;
     private RaycastHit _screenRayHit;
@@ -38,13 +38,17 @@ public class RangeWeaponPrototype : MonoBehaviour
 
             if (Physics.Raycast(_aimingRay, out _aimingRayHit))
             {
-                _cursor.SetRayGuide(_aimingCamera.WorldToScreenPoint(_aimingRay.origin), _aimingCamera.WorldToScreenPoint(_aimingRayHit.point));
+                // _cursor.SetRayGuide(_aimingCamera.WorldToScreenPoint(_aimingRay.origin), _aimingCamera.WorldToScreenPoint(_aimingRayHit.point));
 
                 if (Input.GetKeyDown(KeyCode.Mouse0))
                 {
-                    _lineRenderer.positionCount = 2;
-                    _lineRenderer.SetPositions(new Vector3[] { _aimingRay.origin, _aimingRayHit.point });
-                    _lineRenderer.widthMultiplier = 0.2f;
+                    //_lineRenderer.positionCount = 2;
+                    //_lineRenderer.SetPositions(new Vector3[] { _aimingRay.origin, _aimingRayHit.point });
+                    //_lineRenderer.widthMultiplier = 0.2f;
+
+                    _bulletObject.SetActive(true);
+
+                    _bulletObject.GetComponent<BulletPrototype>().Initialize(_aimingRay.origin, (_aimingRayHit.point - _aimingRay.origin).normalized * 64f);
                 }
             }
         }

@@ -1,0 +1,6 @@
+TemplateID,ItemMesh,WeaponName,AtkDmg,AtkSpd,AttackDirection,AttackRangeValue1,AttackRangeValue2
+1,,IronSword,10,1,1,1.5,120
+2,,SilverSword,20,1,1,1.5,120
+3,,GoldSword,20,1,1,1.5,120
+4,,PlatinumSword,20,1,1,1.5,120
+5,,DiamondSword,20,1,1,1.5,120
