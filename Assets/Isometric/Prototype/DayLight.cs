@@ -10,26 +10,36 @@ public class DayLight : MonoBehaviour
     private Transform _transform;
     private Light _light;
 
-    private float _value;
+    private float _time;
+    private float _updateFactor;
 
     private void Awake()
     {
         _transform = GetComponent<Transform>();
         _light = GetComponent<Light>();
 
-        _value = 0f;
+        _time = 0f;
     }
 
     private void Update()
     {
-        // SetTime(Time.time * 0.1f);
+        _updateFactor = Mathf.Lerp(_updateFactor, 1f, Time.deltaTime * 5f);
+        _time = _time + Time.deltaTime * 0.02f * _updateFactor;
+
+        SetTime(_time);
     }
 
     private void OnGUI()
     {
-        _value = GUI.HorizontalSlider(new Rect(10f, 10f, 100f, 10f), _value, 0f, 1f);
+        float lastTime = _time;
 
-        SetTime(_value);
+        _time = GUI.HorizontalSlider(new Rect(10f, 10f, 100f, 10f), _time, 0f, 1f);
+
+        if (_time != lastTime)
+        {
+            _updateFactor = 0f;
+            SetTime(_time);
+        }
     }
 
     public void SetTime(float time)

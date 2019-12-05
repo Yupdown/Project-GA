@@ -12,12 +12,12 @@ public class TerrainGenerator : MonoBehaviour
     private const int Width = 64;
     private const int Height = 64;
 
-    private void Awake()
+    private void Awake ()
     {
         _transform = GetComponent<Transform>();
     }
 
-    void Start ()
+    private void Start ()
     {
 		for (int x = 0; x < Width; x++)
         {
