@@ -4,16 +4,16 @@ using UnityEngine;
 
 namespace Gnome.Isometric.Prototype
 {
-    public class PlayerInterface : MonoBehaviour
+    internal class PlayerInterface : MonoBehaviour
     {
         [SerializeField]
         private PlayerCursor[] cursors;
+
+        private PlayerCursor currentCursor;
         
         private void Awake()
         {
             ClearCursor();
-
-            SwitchCursor(CursorType.RangeWeapon);
         }
 
         private void ClearCursor()
@@ -24,11 +24,19 @@ namespace Gnome.Isometric.Prototype
             }
         }
 
+        public void UpdateCursor(PlayerWeaponHandler handler)
+        {
+            if (currentCursor != null)
+                currentCursor.CursorUpdate(handler);
+        }
+
         public void SwitchCursor(CursorType cursor)
         {
             ClearCursor();
 
-            cursors[(uint)cursor].gameObject.SetActive(true);
+            currentCursor = cursors[(uint)cursor];
+            
+            currentCursor.gameObject.SetActive(true);
         }
     }
 

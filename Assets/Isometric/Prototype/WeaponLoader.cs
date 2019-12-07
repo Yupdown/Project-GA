@@ -3,19 +3,22 @@ using Gnome.Template;
 
 namespace Gnome.Isometric.Prototype
 {
-    public class WeaponLoader : MonoBehaviour
+    internal class WeaponLoader : MonoBehaviour
     {
         [SerializeField]
         private TextAsset weaponTemplateCSVAsset;
 
-        private void Awake()
+        public Weapon[] LoadWeapons()
         {
             string csvText = weaponTemplateCSVAsset.text;
 
             Weapon[] weapons = CSVTemplateInstantiation.CreateInstancesFromText<Weapon>(csvText);
 
-            foreach (var weapon in weapons)
-                Debug.Log(weapon.WeaponName);
+            string debugText = string.Empty;
+            System.Array.ForEach(weapons, (weapon) => debugText = string.Concat(debugText, weapon.WeaponName, '\n'));
+            Debug.Log(debugText);
+
+            return weapons;
         }
     }
 }

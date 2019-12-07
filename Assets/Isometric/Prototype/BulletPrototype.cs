@@ -2,27 +2,42 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BulletPrototype : MonoBehaviour
+namespace Gnome.Isometric.Prototype
 {
-    private Vector3 velocity;
-
-    private void Update()
+    public class BulletPrototype : MonoBehaviour
     {
-        transform.localPosition += velocity * Time.deltaTime;
-    }
+        private Vector3 velocity;
 
-    public void Initialize (Vector3 position, Vector3 velocity)
-    {
-        transform.localPosition = position;
+        private Rigidbody bulletRigidbody;
 
-        this.velocity = velocity;
-    }
-
-    private void OnCollisionEnter(Collision collision)
-    {
-        if (!collision.gameObject.name.Equals("Player"))
+        private void Awake()
         {
-            gameObject.SetActive(false);
+            bulletRigidbody = GetComponent<Rigidbody>();
+        }
+
+        private void Update()
+        {
+            bulletRigidbody.velocity = velocity;
+        }
+
+        public void Initialize(Vector3 position, Vector3 velocity)
+        {
+            bulletRigidbody.position = position;
+
+            this.velocity = velocity;
+        }
+
+        private void OnCollisionEnter(Collision collision)
+        {
+            if (!collision.gameObject.name.Equals("Player"))
+            {
+                GameObject.Destroy(gameObject);
+
+                ITarget target = collision.gameObject.GetComponent<ITarget>();
+
+                if (target != null)
+                    target.InflictDamage(10f);
+            }
         }
     }
 }
