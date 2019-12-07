@@ -2,15 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MeleeWeaponPrototype : MonoBehaviour {
-
-	// Use this for initialization
-	void Start () {
-		
-	}
-	
+public class Rotate : MonoBehaviour {
+    
 	// Update is called once per frame
 	void Update () {
-		
+        GetComponent<Transform>().Rotate(0f, 180f * Time.deltaTime, 0f, Space.World);
 	}
 }

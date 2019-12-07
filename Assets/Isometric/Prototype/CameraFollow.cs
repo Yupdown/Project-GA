@@ -4,11 +4,15 @@ using UnityEngine;
 
 public class CameraFollow : MonoBehaviour
 {
-    public Transform _cameraTransform;
+    private Transform cameraTransform;
 
+    private void Start()
+    {
+        cameraTransform = CameraSingleton.cameraTransform;
+    }
 
     private void LateUpdate ()
     {
-        transform.localRotation = Quaternion.Euler(_cameraTransform.rotation.eulerAngles);
+        transform.localRotation = Quaternion.Euler(cameraTransform.rotation.eulerAngles);
     }
 }
