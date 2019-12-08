@@ -39,7 +39,7 @@ namespace Gnome.Isometric.Prototype
         public void OnAttack(Vector3 originPosition, Vector3 direction)
         {
             if (attackType != null)
-                attackType.OnAttack(originPosition, direction);
+                attackType.Attack(originPosition, direction);
         }
 
         public void Override(TemplateRecord record)
@@ -61,20 +61,15 @@ namespace Gnome.Isometric.Prototype
 
             switch (attackDirection)
             {
-                case 1:
-                    attackType = new WeaponAttackTarget();
+                case 0: attackType = new WeaponAttackTarget(attackDamage, attackSpeed, attackRangeValue1);
                     break;
-                case 2:
-                    attackType = new WeaponAttackMeleeRadial(attackRangeValue1, attackRangeValue2);
+                case 1: attackType = new WeaponAttackMeleeRadial(attackDamage, attackSpeed, attackRangeValue1, attackRangeValue2);
                     break;
-                case 3:
-                    attackType = new WeaponAttackMeleeBox(attackRangeValue1, attackRangeValue2);
+                case 2: attackType = new WeaponAttackMeleeBox(attackDamage, attackSpeed, attackRangeValue1, attackRangeValue2);
                     break;
-                case 4:
-                    attackType = new WeaponAttackRangeRay(attackRangeValue1, attackRangeValue2 > 0f);
+                case 3: attackType = new WeaponAttackRangeRay(attackDamage, attackSpeed, attackRangeValue1, attackRangeValue2 > 0f);
                     break;
-                case 5:
-                    attackType = new WeaponAttackRangeProjectile(attackRangeValue1, attackRangeValue2);
+                case 4: attackType = new WeaponAttackRangeProjectile(attackDamage, attackSpeed, attackRangeValue1, attackRangeValue2);
                     break;
             }
         }

@@ -9,7 +9,7 @@ namespace Gnome.Isometric.Prototype
 
         private GameObject bulletPrefab;
 
-        public WeaponAttackRangeProjectile(float projectileSpeed, float projectileRadius)
+        public WeaponAttackRangeProjectile(float attackDamage, float attackSpeed, float projectileSpeed, float projectileRadius) : base(attackDamage, attackSpeed)
         {
             this.projectileSpeed = projectileSpeed;
             this.projectileRadius = projectileRadius;

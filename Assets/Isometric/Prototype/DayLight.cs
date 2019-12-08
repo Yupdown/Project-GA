@@ -13,6 +13,8 @@ public class DayLight : MonoBehaviour
     private float _time;
     private float _updateFactor;
 
+    private bool _updateTime;
+
     private void Awake()
     {
         _transform = GetComponent<Transform>();
@@ -23,10 +25,13 @@ public class DayLight : MonoBehaviour
 
     private void Update()
     {
-        _updateFactor = Mathf.Lerp(_updateFactor, 1f, Time.deltaTime * 5f);
-        _time = _time + Time.deltaTime * 0.02f * _updateFactor;
+        if (_updateTime)
+        {
+            _updateFactor = Mathf.Lerp(_updateFactor, 1f, Time.deltaTime * 5f);
+            _time = _time + Time.deltaTime * 0.02f * _updateFactor;
 
-        SetTime(_time);
+            SetTime(_time);
+        }
     }
 
     private void OnGUI()
@@ -40,6 +45,8 @@ public class DayLight : MonoBehaviour
             _updateFactor = 0f;
             SetTime(_time);
         }
+
+        _updateTime = GUI.Toggle(new Rect(120f, 10f, 10f, 10f), _updateTime, "Update Time");
     }
 
     public void SetTime(float time)

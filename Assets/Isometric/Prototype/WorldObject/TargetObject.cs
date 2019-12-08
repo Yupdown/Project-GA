@@ -21,8 +21,6 @@ namespace Gnome.Isometric.Prototype
         public void InflictDamage(float value)
         {
             damageTime = 0f;
-
-            Debug.Log("Damaged ! : " + value);
         }
     }
 

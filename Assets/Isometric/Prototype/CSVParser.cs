@@ -1,5 +1,5 @@
-﻿using System.IO;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.Text;
 
 namespace Gnome.Template
 {
@@ -19,7 +19,8 @@ namespace Gnome.Template
                 if (string.IsNullOrEmpty(line))
                     continue;
 
-                string[] fields = line.Split(',');
+                string trimmedLine = line.TrimEnd();
+                string[] fields = trimmedLine.Split(',');
 
                 list.Add(fields);
             }

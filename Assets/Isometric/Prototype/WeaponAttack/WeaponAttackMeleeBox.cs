@@ -7,7 +7,7 @@ namespace Gnome.Isometric.Prototype
         private float distance;
         private float width;
 
-        public WeaponAttackMeleeBox(float distance, float width)
+        public WeaponAttackMeleeBox(float attackDamage, float attackSpeed, float distance, float width) : base(attackDamage, attackSpeed)
         {
             this.distance = distance;
             this.width = width;
@@ -25,7 +25,7 @@ namespace Gnome.Isometric.Prototype
                 ITarget target = collider.GetComponent<ITarget>();
 
                 if (target != null)
-                    target.InflictDamage(10f);
+                    InflictDamage(target);
             }
 
             gizmosPosition = originPosition;

@@ -10,7 +10,7 @@ namespace Gnome.Isometric.Prototype
         private float radius;
         private float angle;
 
-        public WeaponAttackMeleeRadial(float radius, float angle)
+        public WeaponAttackMeleeRadial(float attackDamage, float attackSpeed, float radius, float angle) : base(attackDamage, attackSpeed)
         {
             this.radius = radius;
             this.angle = angle;
@@ -18,21 +18,6 @@ namespace Gnome.Isometric.Prototype
 
         public override void OnAttack(Vector3 originPosition, Vector3 direction)
         {
-            //int rayCount = Mathf.Max(Mathf.FloorToInt(radius * 2f * Mathf.PI * (angle / 360f) / CastIntervalMax) + 1, 2);
-            //float[] distances = new float[rayCount];
-
-            //for (int count = 0; count < rayCount; count++)
-            //{
-            //    Vector3 rayDirection = Quaternion.AngleAxis(((float)count / (rayCount - 1) - 0.5f) * angle, Vector3.up) * direction;
-
-            //    Ray ray = new Ray(originPosition, rayDirection);
-
-            //    RaycastHit result;
-            //    Physics.Raycast(ray, out result, radius, 24);
-
-            //    distances[count] = result.distance;
-            //}
-
             Collider[] result = Physics.OverlapSphere(originPosition, radius);
 
             foreach (Collider collider in result)
@@ -48,7 +33,7 @@ namespace Gnome.Isometric.Prototype
                     Vector2 rhs = new Vector2(direction.x, direction.z).normalized;
 
                     if (Vector2.Dot(lhs, rhs) > 1f - angle / 180f)
-                        target.InflictDamage(10f);
+                        InflictDamage(target);
                 }
             }
 

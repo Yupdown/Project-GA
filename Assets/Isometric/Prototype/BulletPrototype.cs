@@ -27,13 +27,13 @@ namespace Gnome.Isometric.Prototype
             this.velocity = velocity;
         }
 
-        private void OnCollisionEnter(Collision collision)
+        private void OnTriggerEnter(Collider other)
         {
-            if (!collision.gameObject.name.Equals("Player"))
+            if (!other.gameObject.name.Equals("Player"))
             {
                 GameObject.Destroy(gameObject);
 
-                ITarget target = collision.gameObject.GetComponent<ITarget>();
+                ITarget target = other.GetComponent<ITarget>();
 
                 if (target != null)
                     target.InflictDamage(10f);
