@@ -19,33 +19,46 @@ namespace Gnome.Isometric.Prototype
 
         public override void OnAttack(Vector3 originPosition, Vector3 targetPosition)
         {
-            Vector3 euler = Random.insideUnitSphere * accuracy;
+            Vector3 euler = Random.insideUnitSphere * accuracy * 0.5f;
             Vector3 spreadDirection = Quaternion.Euler(euler) * (targetPosition - originPosition).normalized;
 
-            Ray ray = new Ray(originPosition, spreadDirection.normalized);
+            Ray ray = new Ray(originPosition, spreadDirection);
+            Vector3 hitPosition = originPosition + spreadDirection * 10f;
 
-            RaycastHit[] result = Physics.RaycastAll(ray);
-            
+            if (piercing)
+            {
+                RaycastHit[] result = Physics.RaycastAll(ray);
+
+                foreach (RaycastHit hit in result)
+                {
+                    ITarget target = hit.collider.GetComponent<ITarget>();
+
+                    if (target != null)
+                        InflictDamage(target);
+                }
+            }
+            else
+            {
+                RaycastHit result;
+
+                if (Physics.Raycast(ray, out result))
+                {
+                    hitPosition = result.point;
+
+                    ITarget target = result.collider.GetComponent<ITarget>();
+
+                    if (target != null)
+                        InflictDamage(target);
+                }
+            }
+
             GameObject rayInstance = GameObject.Instantiate(rayPrefab);
             LineRenderer rayComponent = rayInstance.GetComponent<LineRenderer>();
 
             rayComponent.positionCount = 2;
             rayComponent.useWorldSpace = true;
             rayComponent.SetPosition(0, originPosition);
-            rayComponent.SetPosition(1, originPosition + spreadDirection * 10f);
-
-            foreach (RaycastHit hit in result)
-            {
-                ITarget target = hit.collider.GetComponent<ITarget>();
-
-                if (target != null)
-                {
-                    InflictDamage(target);
-
-                    if (!piercing)
-                        break;
-                }
-            }
+            rayComponent.SetPosition(1, hitPosition);
 
             gizmosRay = ray;
         }
