@@ -13,8 +13,10 @@ namespace Gnome.Isometric.Prototype
             this.width = width;
         }
 
-        public override void OnAttack(Vector3 originPosition, Vector3 direction)
+        public override void OnAttack(Vector3 originPosition, Vector3 targetPosition)
         {
+            Vector3 direction = (targetPosition - originPosition).normalized;
+
             Quaternion orientation = Quaternion.Euler(0f, -Mathf.Atan2(direction.z, direction.x) * Mathf.Rad2Deg, 0f);
             Vector3 halfExtents = new Vector3(distance * 0.5f, 0.5f, width * 0.5f);
 

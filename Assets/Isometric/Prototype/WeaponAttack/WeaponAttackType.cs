@@ -8,14 +8,10 @@ namespace Gnome.Isometric.Prototype
 
         protected float attackSpeed = 1f;
 
-        private float lastAttackTime;
-
         public WeaponAttackType(float attackDamage, float attackSpeed)
         {
             this.attackDamage = attackDamage;
             this.attackSpeed = attackSpeed;
-
-            lastAttackTime = 0f;
         }
 
         public void InflictDamage(ITarget targetObject)
@@ -23,17 +19,12 @@ namespace Gnome.Isometric.Prototype
             targetObject.InflictDamage(attackDamage);
         }
 
-        public void Attack(Vector3 originPosition, Vector3 direction)
+        public void Attack(Vector3 originPosition, Vector3 targetPosition)
         {
-            if (Time.time - lastAttackTime >= attackSpeed)
-            {
-                OnAttack(originPosition, direction);
-
-                lastAttackTime = Time.time;
-            }
+            OnAttack(originPosition, targetPosition);
         }
 
-        public abstract void OnAttack(Vector3 originPosition, Vector3 direction);
+        public abstract void OnAttack(Vector3 originPosition, Vector3 targetPosition);
 
         public virtual void OnDrawGizmos() { }
 

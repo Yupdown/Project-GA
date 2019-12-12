@@ -53,6 +53,7 @@ namespace Gnome.Template
             }
             catch
             {
+                UnityEngine.Debug.LogError("Key " + key + " is not found");
                 return false;
             }
         }

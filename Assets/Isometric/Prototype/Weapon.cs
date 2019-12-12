@@ -20,6 +20,12 @@ namespace Gnome.Isometric.Prototype
         private Sprite weaponTexture;
 
         private int attackDamage;
+
+        public float AttackSpeed
+        {
+            get
+            { return attackSpeed; }
+        }
         private float attackSpeed;
 
         public WeaponAttackType AttackType
@@ -45,7 +51,7 @@ namespace Gnome.Isometric.Prototype
         public void Override(TemplateRecord record)
         {
             record.TryGetValue("WeaponName", ref weaponName);
-            record.TryGetValue("aAtkDmg", ref attackDamage);
+            record.TryGetValue("AtkDmg", ref attackDamage);
             record.TryGetValue("AtkSpd", ref attackSpeed);
 
             string texturePath = string.Empty;

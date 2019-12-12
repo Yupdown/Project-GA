@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace Gnome.Isometric.Prototype
 {
@@ -10,7 +11,12 @@ namespace Gnome.Isometric.Prototype
         private PlayerCursor[] cursors;
 
         private PlayerCursor currentCursor;
-        
+
+        [SerializeField]
+        private Text weaponNameText;
+        [SerializeField]
+        private Image weaponImage;
+
         private void Awake()
         {
             ClearCursor();
@@ -37,6 +43,12 @@ namespace Gnome.Isometric.Prototype
             currentCursor = cursors[(uint)cursor];
             
             currentCursor.gameObject.SetActive(true);
+        }
+
+        public void UpdateWeapon(Weapon targetWeapon)
+        {
+            weaponNameText.text = targetWeapon.WeaponName;
+            weaponImage.sprite = targetWeapon.WeaponTexture;
         }
     }
 

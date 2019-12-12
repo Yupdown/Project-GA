@@ -37,6 +37,8 @@ namespace Gnome.Isometric.Prototype
                 if (Physics.Raycast(aimingRay, out aimingRayHit))
                 {
                     rayGuideTransform.localPosition = WorldToLocalPosition(aimingRayHit.point);
+                    
+                    handler.AimWeapon(aimingRayHit.point);
 
                     if (Input.GetKey(KeyCode.Mouse0))
                     {

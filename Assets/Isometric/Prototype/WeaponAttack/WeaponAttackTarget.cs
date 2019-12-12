@@ -11,22 +11,19 @@ namespace Gnome.Isometric.Prototype
             this.attackRange = attackRange;
         }
 
-        public override void OnAttack(Vector3 originPosition, Vector3 direction)
+        public override void OnAttack(Vector3 originPosition, Vector3 targetPosition)
         {
-            Collider[] result = Physics.OverlapSphere(originPosition, attackRange);
+            Collider[] result = Physics.OverlapSphere(targetPosition, attackRange);
 
             foreach (Collider collider in result)
             {
                 ITarget target = collider.GetComponent<ITarget>();
 
                 if (target != null)
-                {
                     InflictDamage(target);
-                    break;
-                }
             }
 
-            gizmosPosition = originPosition;
+            gizmosPosition = targetPosition;
         }
 
         private Vector3 gizmosPosition;

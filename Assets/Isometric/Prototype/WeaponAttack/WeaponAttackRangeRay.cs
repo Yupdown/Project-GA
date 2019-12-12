@@ -17,10 +17,10 @@ namespace Gnome.Isometric.Prototype
             rayPrefab = Resources.Load<GameObject>("Ray Line Renderer");
         }
 
-        public override void OnAttack(Vector3 originPosition, Vector3 direction)
+        public override void OnAttack(Vector3 originPosition, Vector3 targetPosition)
         {
             Vector3 euler = Random.insideUnitSphere * accuracy;
-            Vector3 spreadDirection = Quaternion.Euler(euler) * direction;
+            Vector3 spreadDirection = Quaternion.Euler(euler) * (targetPosition - originPosition).normalized;
 
             Ray ray = new Ray(originPosition, spreadDirection.normalized);
 

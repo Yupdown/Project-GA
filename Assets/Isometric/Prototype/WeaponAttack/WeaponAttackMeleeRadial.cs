@@ -16,9 +16,11 @@ namespace Gnome.Isometric.Prototype
             this.angle = angle;
         }
 
-        public override void OnAttack(Vector3 originPosition, Vector3 direction)
+        public override void OnAttack(Vector3 originPosition, Vector3 targetPosition)
         {
             Collider[] result = Physics.OverlapSphere(originPosition, radius);
+
+            Vector3 direction = (targetPosition - originPosition).normalized;
 
             foreach (Collider collider in result)
             {
@@ -27,9 +29,9 @@ namespace Gnome.Isometric.Prototype
                 if (target != null)
                 {
                     Transform targetTransform = collider.GetComponent<Transform>();
-                    Vector3 targetPosition = targetTransform.position;
+                    Vector3 targetTransformPosition = targetTransform.position;
 
-                    Vector2 lhs = new Vector2(targetPosition.x - originPosition.x, targetPosition.z - originPosition.z).normalized;
+                    Vector2 lhs = new Vector2(targetTransformPosition.x - originPosition.x, targetTransformPosition.z - originPosition.z).normalized;
                     Vector2 rhs = new Vector2(direction.x, direction.z).normalized;
 
                     if (Vector2.Dot(lhs, rhs) > 1f - angle / 180f)

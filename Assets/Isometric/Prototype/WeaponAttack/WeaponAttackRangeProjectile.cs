@@ -17,12 +17,12 @@ namespace Gnome.Isometric.Prototype
             bulletPrefab = Resources.Load<GameObject>("Bullet");
         }
 
-        public override void OnAttack(Vector3 originPosition, Vector3 direction)
+        public override void OnAttack(Vector3 originPosition, Vector3 targetPosition)
         {
             GameObject bulletInstance = GameObject.Instantiate(bulletPrefab);
             BulletPrototype bulletComponent = bulletInstance.GetComponent<BulletPrototype>();
             
-            bulletComponent.Initialize(originPosition, direction.normalized * projectileSpeed);
+            bulletComponent.Initialize(originPosition, (targetPosition - originPosition).normalized * projectileSpeed);
         }
 
         public override CursorType WeaponCursor
