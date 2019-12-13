@@ -4,7 +4,7 @@
 103,Sprite/LaserGun,Rapper,15,0.01,3,180,0
 104,Sprite/LaserGun,Laser Gun 20,15,0.1,3,20,0
 105,Sprite/LaserGun,Laser Gun 5,15,0.1,3,5,0
-106,Sprite/Pistol,Pistol2,15,0.5,4,3,1
+106,Sprite/Pistol,Pistol2,15,0.5,4,75,1
 107,itemaluminumbat,Bat,10,0.2,1,3,120
 108,BC32,Targeting,10,0.5,0,5,0
 109,Pickaxe,PickFuck,10,0.3,2,3,3
