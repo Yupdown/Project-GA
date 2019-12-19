@@ -1,6 +1,7 @@
 ﻿Shader "Example/NPRExample" {
 	Properties {
 		_MainTex ("Albedo (RGB)", 2D) = "white" {}
+		_Color ("Color", Color) = (1.0, 1.0, 1.0, 1.0)
 		_Outline("Outline", Range(0.0, 1.0)) = 0.01
 		_Steps("Steps", Range(0.0, 64.0)) = 4.0
 	}
@@ -41,6 +42,7 @@
 #pragma target 3.0
 
 		sampler2D _MainTex;
+		float4 _Color;
 		float _Steps;
 
 		void vert(inout appdata_full v)
@@ -50,11 +52,12 @@
 
 		struct Input {
 			float2 uv_MainTex;
+			float4 color : COLOR;
 		};
 
 		void surf(Input IN, inout SurfaceOutput o) {
 			fixed4 c = tex2D(_MainTex, IN.uv_MainTex);
-			o.Albedo = c.rgb;
+			o.Albedo = c.rgb * IN.color * _Color;
 			o.Alpha = c.a;
 		}
 

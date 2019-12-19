@@ -5,10 +5,14 @@ using UnityEngine;
 public class CameraTransform : MonoBehaviour
 {
     [SerializeField]
+    private Transform _targetTransform;
+
+    [SerializeField]
     private float _moveSpeed;
 
     private Vector3 _targetPosition;
 
+    [SerializeField]
     private float _viewAngle = 45f;
 
     private Transform _transform;
@@ -28,8 +32,9 @@ public class CameraTransform : MonoBehaviour
 
     private void LateUpdate()
     {
-        float angleY = Mathf.LerpAngle(_transform.localRotation.eulerAngles.y, _viewAngle, Time.deltaTime * 8f);
+        float angleY = Mathf.LerpAngle(_transform.localRotation.eulerAngles.y, _viewAngle, Time.deltaTime * _moveSpeed);
 
+        _transform.localPosition = Vector3.Lerp(_transform.localPosition, _targetTransform.position, Time.deltaTime * _moveSpeed);
         _transform.localRotation = Quaternion.Euler(0f, angleY, 0f);
     }
 

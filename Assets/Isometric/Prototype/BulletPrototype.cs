@@ -29,7 +29,7 @@ namespace Gnome.Isometric.Prototype
 
         private void OnTriggerEnter(Collider other)
         {
-            if (!other.gameObject.name.Equals("Player"))
+            if (!other.gameObject.name.Equals("Player") && !other.gameObject.name.Equals("Bullet(Clone)"))
             {
                 GameObject.Destroy(gameObject);
 

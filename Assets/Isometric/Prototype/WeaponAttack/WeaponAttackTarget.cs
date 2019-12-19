@@ -4,10 +4,12 @@ namespace Gnome.Isometric.Prototype
 {
     public class WeaponAttackTarget : WeaponAttackType
     {
+        private float attackRadius;
         private float attackRange;
 
-        public WeaponAttackTarget(float attackDamage, float attackSpeed, float attackRange) : base(attackDamage, attackSpeed)
+        public WeaponAttackTarget(float attackDamage, float attackSpeed, float attackRadius, float attackRange) : base(attackDamage, attackSpeed)
         {
+            this.attackRadius = attackRadius;
             this.attackRange = attackRange;
         }
 

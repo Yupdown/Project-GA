@@ -17,12 +17,6 @@ namespace Gnome.Isometric.Prototype
         private PlayerInterface playerInterface;
 
         [SerializeField]
-        private Transform weaponTransform;
-
-        [SerializeField]
-        private Transform weaponRendererTransform;
-
-        [SerializeField]
         private SpriteRenderer weaponRenderer;
 
         [SerializeField]
@@ -34,8 +28,30 @@ namespace Gnome.Isometric.Prototype
 
         private float lastAttackTime;
         private bool attackCycle;
-        private float swingValue;
         private float rotationValue;
+
+        private float offsetValue;
+
+        public float ViewAngle
+        {
+            get
+            { return viewAngle; }
+        }
+        private float viewAngle;
+
+        public bool AimPriority
+        {
+            get
+            { return aimPriority; }
+        }
+        private bool aimPriority;
+
+        public float SwingValue
+        {
+            get
+            { return swingValue; }
+        }
+        private float swingValue;
 
         private void Awake()
         {
@@ -44,6 +60,7 @@ namespace Gnome.Isometric.Prototype
             cachedTransform = GetComponent<Transform>();
 
             lastAttackTime = 0f;
+            offsetValue = 1f;
         }
 
         private void Start()
@@ -65,12 +82,30 @@ namespace Gnome.Isometric.Prototype
 
             float attackTime = Time.time - lastAttackTime;
 
-            if (attackTime < 1.5f)
+            bool canSwing = false;
+            bool canAiming = false;
+
+            if (handledWeapon != null)
+            {
+                canSwing = handledWeapon.AttackType.WeaponCursor == CursorType.MeleeWeapon;
+                canAiming = handledWeapon.AttackType.WeaponCursor == CursorType.RangeWeapon;
+            }
+
+            bool attacking = attackTime < 0.5f;
+
+            if (canSwing && attacking)
                 swingValue = Mathf.Lerp(swingValue, attackCycle ? 60f : -60f, Time.deltaTime * 10f);
             else
                 swingValue = Mathf.Lerp(swingValue, 0f, Time.deltaTime * 5f);
+            
+            bool aiming = Input.GetKey(KeyCode.Mouse1) && canAiming;
+            aimPriority = aiming || attacking;
 
-            weaponRendererTransform.localRotation = Quaternion.Euler(0f, 0f, rotationValue + swingValue);
+            offsetValue = Mathf.Lerp(offsetValue, aiming ? 8f : 1f, Time.deltaTime * 8f);
+
+            Vector2 offset = (Input.mousePosition - new Vector3(Screen.width, Screen.height) * 0.5f) / Screen.width * offsetValue;
+
+            cameraBehaviour.OffsetCamera(offset);
         }
 
         public void SwitchWeapon(Weapon weapon)
@@ -82,18 +117,15 @@ namespace Gnome.Isometric.Prototype
             playerInterface.UpdateWeapon(weapon);
         }
 
-        public void AimWeapon(Vector3 position)
+        public void AimWeapon(Vector3 point)
         {
-            Vector3 delta = position - cachedTransform.position;
-            float radian = Mathf.Atan2(delta.z, delta.x);
+            Vector3 delta = point - cachedTransform.position;
+            AimWeapon(Mathf.Atan2(delta.z, delta.x) * Mathf.Rad2Deg);
+        }
 
-            rotationValue = radian * Mathf.Rad2Deg + IsometricCameraBehaviour.cameraTransform.eulerAngles.y - 45f;
-            if (weaponTransform.localScale.x < 0f)
-                rotationValue = rotationValue * -1f + 90f;
-
-            weaponTransform.localPosition = new Vector3(Mathf.Cos(radian), 0f, Mathf.Sin(radian)) * 0.2f;
-
-            cameraBehaviour.OffsetCamera((Input.mousePosition - new Vector3(Screen.width, Screen.height) * 0.5f) / Screen.width);
+        public void AimWeapon(float viewAngle)
+        {
+            this.viewAngle = viewAngle;
         }
 
         public void AttackWithTargetPosition(Vector3 position)
@@ -115,6 +147,14 @@ namespace Gnome.Isometric.Prototype
         {
             if (handledWeapon != null)
                 handledWeapon.AttackType.OnDrawGizmos();
+        }
+
+        public float ApplyPlayerMoveSpeed(float moveSpeed, PlayerMovement movement)
+        {
+            if (aimPriority)
+                moveSpeed *= 1f - Mathf.Abs(Mathf.DeltaAngle(viewAngle, movement.ViewAngle) / 360f);
+
+            return moveSpeed;
         }
     }
 }

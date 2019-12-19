@@ -16,6 +16,9 @@ namespace Gnome.Isometric.Prototype
         [SerializeField]
         private RectTransform rayGuideTransform;
 
+        [SerializeField]
+        private LineRenderer lineRenderer;
+
         private Ray screenRay;
         private RaycastHit screenRayHit;
 
@@ -24,7 +27,9 @@ namespace Gnome.Isometric.Prototype
 
         public override void CursorUpdate(PlayerWeaponHandler handler)
         {
-            cursorTransform.localPosition = ScreenToLocalPosition(Input.mousePosition);
+            Vector2 mousePosition = ScreenToLocalPosition(Input.mousePosition);
+
+            cursorTransform.localPosition = mousePosition;
 
             screenRay = aimingCamera.ScreenPointToRay(Input.mousePosition);
 
@@ -36,8 +41,14 @@ namespace Gnome.Isometric.Prototype
 
                 if (Physics.Raycast(aimingRay, out aimingRayHit))
                 {
-                    rayGuideTransform.localPosition = WorldToLocalPosition(aimingRayHit.point);
-                    
+                    Vector2 targetPosition = WorldToLocalPosition(aimingRayHit.point);
+
+                    rayGuideTransform.localPosition = targetPosition;
+
+                    lineRenderer.positionCount = 2;
+                    lineRenderer.SetPosition(0, Vector2.zero);
+                    lineRenderer.SetPosition(1, targetPosition);
+
                     handler.AimWeapon(aimingRayHit.point);
 
                     if (Input.GetKey(KeyCode.Mouse0))

@@ -67,7 +67,7 @@ namespace Gnome.Isometric.Prototype
 
             switch (attackDirection)
             {
-                case 0: attackType = new WeaponAttackTarget(attackDamage, attackSpeed, attackRangeValue1);
+                case 0: attackType = new WeaponAttackTarget(attackDamage, attackSpeed, attackRangeValue1, attackRangeValue2);
                     break;
                 case 1: attackType = new WeaponAttackMeleeRadial(attackDamage, attackSpeed, attackRangeValue1, attackRangeValue2);
                     break;
